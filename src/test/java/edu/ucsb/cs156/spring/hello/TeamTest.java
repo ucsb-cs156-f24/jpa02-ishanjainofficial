@@ -30,6 +30,11 @@ public class TeamTest {
     }
 
     @Test
+    public void toString_returns_correct_string() {
+        assertEquals("Team(name=test-team, members=[])", team.toString());
+    }
+
+    @Test
     public void getTeam_returns_team_with_correct_members() {
         Team  t = Developer.getTeam();
         assertTrue(t.getMembers().contains("Ishan"),"Team should contain Ishan");

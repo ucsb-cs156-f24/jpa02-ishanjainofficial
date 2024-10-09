@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.spring.hello;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,5 +44,27 @@ public class TeamTest {
         assertTrue(t.getMembers().contains("Ryan"),"Team should contain Ryan");
         assertTrue(t.getMembers().contains("William"),"Team should contain William");
         assertTrue(t.getMembers().contains("Alex"),"Team should contain Alex");
+    }
+
+    @Test
+    public void hashTest_Yes() {
+        Team t1 = new Team();
+        t1.setName("Ishan");
+        t1.addMember("bar");
+        Team t2 = new Team();
+        t2.setName("Ishan");
+        t2.addMember("bar");
+        assertEquals(t1.hashCode(), t2.hashCode());
+    }
+
+    @Test
+    public void hashTest_No() {
+        Team t1 = new Team();
+        t1.setName("Ishan");
+        t1.addMember("bar");
+        Team t2 = new Team();
+        t2.setName("foo");
+        t2.addMember("bar");
+        assertNotEquals(t1.hashCode(), t2.hashCode());
     }
 }

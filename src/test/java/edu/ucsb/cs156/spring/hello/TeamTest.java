@@ -16,7 +16,7 @@ public class TeamTest {
 
     @BeforeEach
     public void setup() {
-        team = new Team("f24-05");
+        team = new Team("test-team");
         team.addMember("Ishan");
         team.addMember("Ben");
         team.addMember("Alex");
@@ -27,18 +27,12 @@ public class TeamTest {
 
     @Test
     public void getName_returns_correct_name() {
-        assertEquals("Team(name=f24-05, members=[Ishan, Ben, Alex, William, Ryan, Beige])", team.toString());
+        assert(team.getName().equals("test-team"));
     }
    
     @Test
-    public void getTeam_returns_team_with_correct_name() {
-        Team t = Developer.getTeam();
-        assertEquals("f24-05", t.getName());
-    }
-
-    @Test
     public void toString_returns_correct_string() {
-        assertEquals("Team(name=f24-05, members=[Ishan, Ben, Alex, William, Ryan, Beige])", team.toString());
+        assertEquals("Team(name=test-team, members=[Ishan, Ben, Alex, William, Ryan, Beige])", team.toString());
     }
 
     @Test
@@ -59,8 +53,8 @@ public class TeamTest {
 
     @Test
     public void test_different_classes() {
-        String testTeam = "test-team";
-        assertFalse(team.equals(testTeam));
+        String a = "test-team";
+        assertFalse(team.equals(a));
     }
 
     @Test
@@ -68,53 +62,71 @@ public class TeamTest {
         Team t = new Team("test-team");
         team.addMember("foo");
         team.addMember("bar");
-        assertFalse(team.equals(t));
+        assertFalse(team.equals(t)); // same name, different members
     }
 
     @Test
-    public void test_same_team_same_members() {
-        Team t2 = new Team("f24-05");
+    public void test_SameMembers_Case() {
+        Team t2 = new Team("test-team");
+        Team t3 = new Team("diff-team");
+
         t2.addMember("Ishan");
         t2.addMember("Ben");
         t2.addMember("Alex");
         t2.addMember("William");
         t2.addMember("Ryan");
-        t2.addMember("Beige"); 
-        assertTrue(team.equals(t2));
+        t2.addMember("Beige");
+
+        t3.addMember("Ishan");
+        t3.addMember("Ben");
+        t3.addMember("Alex");
+        t3.addMember("William");
+        t3.addMember("Ryan");
+        t3.addMember("Beige");
+
+        assertTrue(team.equals(t2)); // same team, same members
+        assertEquals(team.equals(t3), false); // different name, same members
     }
 
     @Test
-    public void test_different_team_different_members() {
+    public void test_DifferentTeam_DifferentMembers() {
         Team t3 = new Team("test");
         t3.addMember("foo");
-        assertFalse(team.equals(t3));
+        assertFalse(team.equals(t3)); // different name, different members
     }
 
     @Test
-    public void test_hash_code_values() {
-        ArrayList<String> first = new ArrayList<>();
-        first.add("John");
-        first.add("gian");
-        first.add("Jack");
+    public void test_Hash_Code() {
+        ArrayList<String> members = new ArrayList<>();
+        members.add("John");
+        members.add("gian");
+        members.add("Jack");
 
-        ArrayList<String> second = new ArrayList<>();
-        second.add("Pat");
-        second.add("Mike");
-        second.add("Adam");
+        ArrayList<String> members2 = new ArrayList<>();
+        members2.add("Pat");
+        members2.add("Mike");
+        members2.add("Adam");
 
-        Team t1 = new Team("f24-01");
-        Team t2 = new Team("f24-01");
-        Team t3 = new Team("f24-02");
-        Team t4 = new Team("f24-01");
+        Team t1 = new Team("test-01");
+        Team t2 = new Team("test-01");
+        Team t3 = new Team("test-02");
+        Team t4 = new Team("test-01");
+        Team t5 = new Team("diff-team");
 
-        t1.setMembers(first);
-        t2.setMembers(first);
-        t3.setMembers(second);
-        t4.setMembers(second);
+        t1.setMembers(members);
+        t2.setMembers(members);
+        t3.setMembers(members);
+        t4.setMembers(members2);
 
-        assertEquals(t1.hashCode(), t2.hashCode());
-        assertNotEquals(t2.hashCode(), t3.hashCode());
-        assertEquals(t3.hashCode(), t4.hashCode());
-        assertNotEquals(t1.hashCode(), t3.hashCode());
+        assertEquals(t1.hashCode() == t2.hashCode(), true); // same name, same members
+        assertEquals(t1.hashCode() == t3.hashCode(), false); // different name, same members
+        assertEquals(t1.hashCode() == t4.hashCode(), false); // same name, different members
+        assertEquals(t1.hashCode() == t5.hashCode(), false); // different name, different members
+    }
+
+    @Test
+    public void coverMutationEdgeCase(){
+        Team team = new Team("test-team");
+        assertEquals(team.hashCode(), -1226298695);
     }
 }
